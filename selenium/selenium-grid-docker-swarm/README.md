@@ -2,23 +2,23 @@
 
 ## create a docker swarm cluster with one manager and more then one worker
 
-# Create a new session on play with docker. You can get upto 4 session here
+## Create a new session on play with docker. You can get upto 4 session here
 https://labs.play-with-docker.com
 
 
-# How to get hit the deployed app
+## How to get hit the deployed app
 https://github.com/play-with-docker/play-with-docker
 
-# example
+### example
 > http://ip172-18-0-32-bjcjpv7dqii000dvr3q0-4444.direct.labs.play-with-docker.com
 
 
-# go to the main folder
+### go to the main folder
 > docker stack deploy -c docker-compose.yml selenium
 
-# list the service
+### list the service
 > docker service ls
 
-# scale the browser
+### scale the browser
 > docker service scale chrome=5
 
