@@ -22,3 +22,6 @@ https://github.com/play-with-docker/play-with-docker
 ### scale the browser
 > docker service scale chrome=5
 
+### check the docker swarm manager/worker
+> docker node ls     (run this on manager)
+
