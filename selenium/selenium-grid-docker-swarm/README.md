@@ -1,4 +1,4 @@
-# Run selenium grid using docker-swarm on AWS
+# Run selenium grid using docker-swarm on play with docker
 
 ## create a docker swarm cluster with one manager and more then one worker
 
