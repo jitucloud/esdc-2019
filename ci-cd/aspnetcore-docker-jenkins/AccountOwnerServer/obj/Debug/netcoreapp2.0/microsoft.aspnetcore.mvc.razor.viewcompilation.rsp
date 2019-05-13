@@ -1,0 +1,5 @@
+/Users/jitendersharma/workspace/code/2019/ci-cd/aspnetcore-docker-jenkins/AccountOwnerServer
+--output-path=obj/Debug/netcoreapp2.0/
+--application-name=AccountOwnerServer
+--content-root=/Users/jitendersharma/workspace/code/2019/ci-cd/aspnetcore-docker-jenkins/AccountOwnerServer
+--file=

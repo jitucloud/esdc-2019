@@ -1,0 +1,6 @@
+2019-05-13 13:44:45.2893 INFO Returned all accounts from database.
+2019-05-13 13:44:52.8622 INFO Returned all owners from database.
+2019-05-13 13:44:59.4856 INFO Here is info message from our values controller.
+2019-05-13 13:44:59.5156 DEBUG Here is debug message from our values controller.
+2019-05-13 13:44:59.5415 WARN Here is warn message from our values controller.
+2019-05-13 13:44:59.5486 ERROR Here is error message from our values controller.
