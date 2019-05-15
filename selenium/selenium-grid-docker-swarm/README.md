@@ -25,3 +25,11 @@ https://github.com/play-with-docker/play-with-docker
 ### check the docker swarm manager/worker
 > docker node ls     (run this on manager)
 
+
+### https://testdriven.io/blog/distributed-testing-with-selenium-grid/
+
+### leave swarm mode
+> docker swarm leave
+
+### kill all docker containers 
+> docker rm $(docker ps -a -q) -f
