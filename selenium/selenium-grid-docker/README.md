@@ -14,4 +14,9 @@
 # scale
 > docker-compose scale chrome=5
 
+### go to testcase folder
+### make sure you have python3 and selenium webdriver installed
+### run unit test
+> python3 test.py
+
 
