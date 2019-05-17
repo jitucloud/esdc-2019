@@ -1,9 +1,9 @@
 ### Create VPC stack
-> aws cloudformation create-stack --stack-name esdc --template-body file://vpc.json 
+> aws cloudformation create-stack --stack-name esdc --template-body file://vpc.json  --profile esdc
 
 
 ### Create VPC stack
 > aws cloudformation create-stack --stack-name esdc --template-body file://vpc.json --parameters  ParameterKey=Parm1,ParameterValue=test1 
 
 ### Delete VPC satck
-> aws cloudformation delete-stack --stack-name esdc-vpc
+> aws cloudformation delete-stack --stack-name esdc-vpc --profile esdc
