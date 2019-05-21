@@ -1,0 +1,45 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: first ec2
+Mappings:
+  RegionMap:
+    ap-southeast-2:
+      AMI: ami-0fb7513bcdc525c3b
+Parameters:
+  NameTag:
+    Description: Name tag for this stack
+    Type: String
+    Default: Hello Guru bhai
+  KeyName:
+    Description: Name of an existing EC2 KeyPair to enable SSH access into the server
+    Type: AWS::EC2::KeyPair::KeyName
+Resources:
+  TestEC2:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: !FindInMap
+        - RegionMap
+        - !Ref 'AWS::Region'
+        - AMI
+      InstanceType: t2.micro
+      Tags:
+        - Key: Name
+          Value: !Join
+            - " "
+            - - !Ref NameTag
+              - !Ref 'AWS::Region'
+      SecurityGroups:
+        - !Ref TestSG
+      KeyName: !Ref KeyName
+  TestSG:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: test sg
+      GroupDescription: test sg
+      SecurityGroupIngress:
+        IpProtocol: tcp
+        FromPort: '22'
+        ToPort: '22'
+        CidrIp: 0.0.0.0/0
+      Tags:
+        - Key: Name
+          Value: !Ref NameTag
