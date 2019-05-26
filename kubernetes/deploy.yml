@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: esdc
+spec:
+  replicas: 10
+  minReadySeconds: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  selector:
+    matchLabels:
+      app: esdc
+  template:
+    metadata:
+      labels:
+        app: esdc
+    spec:
+      containers:
+      - name: esdc
+        image: jitendersharma/esdc-hw:v1
+        ports:
+          - containerPort: 8080
+

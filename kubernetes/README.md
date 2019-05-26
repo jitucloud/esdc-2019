@@ -45,6 +45,21 @@
 #### create pods using YML file
 > kubectl create -f pod.yml 
 
+### do a deploy and rolling update
+> kubectl create -f deploy.yml
+
+#### do a rolling update and put record flag
+> kubectl apply -f deploy.yml  --record
+
+#### verify the history/changes and revision number : IMP
+> kubectl rollout history deployment esdc
+
+#### get both the replica set new and update one 
+> kubectl get rs
+
+#### rollback to previous version
+> kubectl rollout undo deployment esdc --to-revision=1
+
 #### get nodes
 > kubectl get nodes
 
