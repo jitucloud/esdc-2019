@@ -3,10 +3,10 @@ kind: Pod
 metadata:
   name: esdc
   labels:
-        app: myapp
+        app: esdc
 spec:
   containers:
-  - name: esdc-hw
+  - name: esdc
     image: jitendersharma/esdc-hw
     resources:
       limits:

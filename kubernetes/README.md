@@ -38,9 +38,21 @@
 ### Expose deployment as service
 > kubectl expose deployment esdc --type=NodePort --port=8080
 
+### If you don't want to run expose command seperately, create another YML file and run that after pods are created
+
 ### kubectl commands
+
+#### create pods using YML file
 > kubectl create -f pod.yml 
+
+#### get nodes
 > kubectl get nodes
+
+#### get pods
 > kubectl get pods
+
+#### describe pod
 > kubectl describe pod {name}
->
+
+#### get all the pod IP's
+> kubectl get ep    
