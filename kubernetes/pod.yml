@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: esdc
+spec:
+  containers:
+  - name: esdc-hw
+    image: jitendersharma/esdc-hw
+    resources:
+      limits:
+        memory: "128Mi"
+        cpu: "500m"
+    ports:
+      - containerPort: 8080
