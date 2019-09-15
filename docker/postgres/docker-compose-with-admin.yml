@@ -6,7 +6,6 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: KafkaDemo
     ports:
       - "5000:5432"
     volumes:
