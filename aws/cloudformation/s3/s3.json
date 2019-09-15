@@ -1,7 +1,0 @@
-{
-"Resources":{
-    "testtony":{
-        "Type":"AWS::S3::Bucket"
-    }
-}
-}
