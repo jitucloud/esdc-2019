@@ -1,0 +1,27 @@
+version: "3.5"
+services:
+  connect:
+    image: "debezium/connect"
+    container_name: "connect"
+    external_links:
+      - zookeeper
+      - broker
+      - postgres
+    hostname: "connect"
+    ports:
+      - "8083:8083"
+    environment:
+      GROUP_ID: 1
+      CONFIG_STORAGE_TOPIC: my_connect_configs
+      OFFSET_STORAGE_TOPIC: my_connect_offsets
+      STATUS_STORAGE_TOPIC: my_connect_statuses
+      BOOTSTRAP_SERVERS: 'broker:29092'
+    networks:
+      - postgres-compose-network
+
+networks: 
+  postgres-compose-network:
+    name: kafka_bridge
+    driver: bridge
+    
+
