@@ -1,21 +1,20 @@
 version: "3.5"
 services:
-  connect:
+  consumer:
     image: "debezium/connect"
-    container_name: "connect"
+    container_name: "consumer"
     external_links:
       - zookeeper
       - broker
       - postgres
-    hostname: "connect"
-    ports:
-      - "8083:8083"
+      - schema-registry:schema-registry
+    hostname: "consumer"
     environment:
       GROUP_ID: 1
       CONFIG_STORAGE_TOPIC: my_connect_configs
       OFFSET_STORAGE_TOPIC: my_connect_offsets
       STATUS_STORAGE_TOPIC: my_connect_statuses
-      BOOTSTRAP_SERVERS: "broker:29092"
+      BOOTSTRAP_SERVERS: 'broker:29092'
     networks:
       - postgres-compose-network
 

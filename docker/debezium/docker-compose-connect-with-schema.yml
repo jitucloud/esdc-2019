@@ -7,6 +7,7 @@ services:
       - zookeeper
       - broker
       - postgres
+      - schema-registry
     hostname: "connect"
     ports:
       - "8083:8083"
@@ -15,7 +16,13 @@ services:
       CONFIG_STORAGE_TOPIC: my_connect_configs
       OFFSET_STORAGE_TOPIC: my_connect_offsets
       STATUS_STORAGE_TOPIC: my_connect_statuses
-      BOOTSTRAP_SERVERS: "broker:29092"
+      KEY_CONVERTER: io.confluent.connect.avro.AvroConverter 
+      VALUE_CONVERTER: io.confluent.connect.avro.AvroConverter 
+      INTERNAL_KEY_CONVERTER: org.apache.kafka.connect.json.JsonConverter 
+      INTERNAL_VALUE_CONVERTER: org.apache.kafka.connect.json.JsonConverter 
+      CONNECT_KEY_CONVERTER_SCHEMA_REGISTRY_URL: http://schema-registry:8081 
+      CONNECT_VALUE_CONVERTER_SCHEMA_REGISTRY_URL: http://schema-registry:8081 
+      BOOTSTRAP_SERVERS: 'broker:29092'
     networks:
       - postgres-compose-network
 

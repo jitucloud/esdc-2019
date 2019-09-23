@@ -10,3 +10,12 @@ Login into pgadmin gui as per details in yml file.
 
 CREATE TABLE IF NOT EXISTS Kafka ( id SERIAL PRIMARY KEY,   name VARCHAR(50) );
 
+
+CREATE TABLE IF NOT EXISTS outboxevent ( 
+	id uuid PRIMARY KEY,  
+	aggregatetype character varying(255) not null, 
+	aggregateid character varying(255) not null, 
+	type character varying(255) not null, 
+	payload jsonb not null);
+
+
