@@ -19,3 +19,7 @@ CREATE TABLE IF NOT EXISTS outboxevent (
 	payload jsonb not null);
 
 
+insert into outboxevent values (gen_random_uuid(),'order','123','ordercreated','{"title": "Sleeping Beauties", "genres": ["Fiction", "Thriller", "Horror"], "published": false}')
+
+
+

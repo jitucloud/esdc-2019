@@ -1,0 +1,18 @@
+{
+    "name": "inventory-connector",
+   "config": {
+   "connector.class":"io.debezium.connector.postgresql.PostgresConnector",
+   "tasks.max":"1",
+   "database.hostname":"postgres",
+   "database.port":"5432",
+   "database.user":"postgres",
+   "database.password":"postgres",
+   "database.dbname" :"inventory",
+   "database.server.name":"dbserver1",
+   "tombstones.on.delete" : "false",
+   "table.whitelist" : "inventory.outboxevent",
+   "transforms" : "outbox",
+   "transforms.outbox.type" : "io.debezium.transforms.outbox.EventRouter"
+   
+    }
+   }
