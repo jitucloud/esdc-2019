@@ -12,10 +12,10 @@ services:
     networks:
       - postgres-compose-network
 
-  broker:
+  broker1:
     image: confluentinc/cp-enterprise-kafka:5.3.1
-    hostname: broker
-    container_name: broker
+    hostname: broker1
+    container_name: broker1
     depends_on:
       - zookeeper
     ports:
@@ -25,11 +25,11 @@ services:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker1:29092,PLAINTEXT_HOST://localhost:9092
       KAFKA_METRIC_REPORTERS: io.confluent.metrics.reporter.ConfluentMetricsReporter
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
-      CONFLUENT_METRICS_REPORTER_BOOTSTRAP_SERVERS: broker:29092
+      CONFLUENT_METRICS_REPORTER_BOOTSTRAP_SERVERS: broker1:29092
       CONFLUENT_METRICS_REPORTER_ZOOKEEPER_CONNECT: zookeeper:2181
       CONFLUENT_METRICS_REPORTER_TOPIC_REPLICAS: 1
       CONFLUENT_METRICS_ENABLE: 'true'
@@ -37,10 +37,10 @@ services:
     networks:
       - postgres-compose-network
 
-  broker1:
+  broker2:
     image: confluentinc/cp-enterprise-kafka:5.3.1
-    hostname: broker1
-    container_name: broker1
+    hostname: broker2
+    container_name: broker2
     depends_on:
       - zookeeper
     ports:
@@ -50,11 +50,11 @@ services:
       KAFKA_BROKER_ID: 2
       KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker1:29093,PLAINTEXT_HOST://localhost:9093
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker2:29093,PLAINTEXT_HOST://localhost:9093
       KAFKA_METRIC_REPORTERS: io.confluent.metrics.reporter.ConfluentMetricsReporter
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
-      CONFLUENT_METRICS_REPORTER_BOOTSTRAP_SERVERS: broker1:29093
+      CONFLUENT_METRICS_REPORTER_BOOTSTRAP_SERVERS: broker2:29093
       CONFLUENT_METRICS_REPORTER_ZOOKEEPER_CONNECT: zookeeper:2181
       CONFLUENT_METRICS_REPORTER_TOPIC_REPLICAS: 1
       CONFLUENT_METRICS_ENABLE: 'true'
@@ -68,8 +68,8 @@ services:
     container_name: schema-registry
     depends_on:
       - zookeeper
-      - broker
       - broker1
+      - broker2
     ports:
       - "8081:8081"
     environment:
@@ -85,13 +85,13 @@ services:
     container_name: control-center
     depends_on:
       - zookeeper
-      - broker
+      - broker2
       - broker1
       - schema-registry
     ports:
       - "9021:9021"
     environment:
-      CONTROL_CENTER_BOOTSTRAP_SERVERS: 'broker:29092,broker1:29093'
+      CONTROL_CENTER_BOOTSTRAP_SERVERS: 'broker1:29092,broker2:29093'
       CONTROL_CENTER_ZOOKEEPER_CONNECT: 'zookeeper:2181'
       CONTROL_CENTER_SCHEMA_REGISTRY_URL: "http://schema-registry:8081"
       CONTROL_CENTER_REPLICATION_FACTOR: 1
@@ -101,6 +101,76 @@ services:
       PORT: 9021
     networks:
       - postgres-compose-network
+
+  ksql-server:
+    image: "confluentinc/cp-ksql-server:5.3.1"
+    hostname: ksql-server
+    container_name: ksql-server
+    depends_on:
+      - broker1
+      - broker2
+      - schema-registry
+    ports:
+      - "8088:8088"
+    environment:
+      KSQL_CONFIG_DIR: "/etc/ksql" 
+      KSQL_LOG4J_OPTS: "-Dlog4j.configuration=file:/etc/ksql/log4j-rolling.properties" 
+      KSQL_BOOTSTRAP_SERVERS: broker1:29092,broker2:29093
+      KSQL_LISTENERS: http://0.0.0.0:8088
+      KSQL_KSQL_SCHEMA_REGISTRY_URL: http://schema-registry:8081
+    networks:
+      - postgres-compose-network
+
+  ksql-cli:
+    image: confluentinc/cp-ksql-cli:5.3.1
+    hostname: ksql-cli
+    container_name: ksql-cli
+    depends_on:
+      - broker1
+      - broker2
+    environment:
+      KSQL_BOOTSTRAP_SERVERS: PLAINTEXT://broker1:9092
+      KSQL_LISTENERS: PLAINTEXT://ksql-server:8088
+    networks:
+      - postgres-compose-network
+    entrypoint: /bin/sh
+    tty: true
+    stdin_open: true
+
+  postgres:
+    image: debezium/postgres
+    hostname: postgres
+    container_name: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres:/var/lib/postgresql/data 
+    networks:
+      - postgres-compose-network
+    restart: unless-stopped
+      
+  pgadmin:
+    image: dpage/pgadmin4
+    hostname: pgadmin
+    container_name: pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "sharma260985@gmail.com"
+      PGADMIN_DEFAULT_PASSWORD: "PgAdmin2019!"
+    ports:
+      - "16543:80"
+    volumes:
+      - pgadmin:/root/.pgadmin
+    depends_on:
+      - postgres
+    networks:
+      - postgres-compose-network
+
+volumes:
+  postgres:
+  pgadmin:
 
 networks: 
     postgres-compose-network:
